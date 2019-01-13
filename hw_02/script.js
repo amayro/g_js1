@@ -1,3 +1,5 @@
+'use strict';
+
 //3. Объявить две целочисленные переменные a и b и задать им произвольные начальные
 //значения. Затем написать скрипт, который работает по следующему принципу:
 //o если a и b положительные, вывести их разность;
@@ -7,8 +9,8 @@
 
 console.log("------ Задание 3. ------");
 
-var a = -2;
-var b = 3;
+let a = -2;
+let b = 3;
 
 if (a > 0 && b > 0) {
     console.log("a - b = ", a - b)
@@ -25,42 +27,42 @@ console.log("------ Задание 4. ------");
 console.log("------ через switch ------");
 
 
-var a = 6;
+a = 6;
 switch (a) {
-    case 0: 
+    case 0:
         console.log(0);
-    case 1: 
+    case 1:
         console.log(1);
-    case 2: 
+    case 2:
         console.log(2);
-    case 3: 
+    case 3:
         console.log(3);
-    case 4: 
+    case 4:
         console.log(4);
-    case 5: 
+    case 5:
         console.log(5);
-    case 6: 
+    case 6:
         console.log(6);
-    case 7: 
+    case 7:
         console.log(7);
-    case 8: 
+    case 8:
         console.log(8);
-    case 9: 
+    case 9:
         console.log(9);
-    case 10: 
+    case 10:
         console.log(10);
         break;
     default:
-        console.log("Число должно быть в диапазоне 0..10");       
+        console.log("Число должно быть в диапазоне 0..10");
 }
 
 console.log("------ без switch ------");
 
-var b = a;
+b = a;
 if (b > 0 && b < 10) {
     while (b <= 10) {
         console.log(b++);
-    };
+    }
 } else {
     console.log("Число должно быть в диапазоне 0..10");
 }
@@ -70,9 +72,13 @@ if (b > 0 && b < 10) {
 //Обязательно использовать оператор return.
 
 console.log("------ Задание 5. ------");
-var a;
-var b;
 
+/**
+ * Функция вычисляет сумму двух аргументов
+ * @param {Number} a первый аргумент
+ * @param {Number} b второй агрумент
+ * @returns {Number} сумма
+ */
 function sum(a, b) {
     return a + b;
 }
@@ -99,9 +105,16 @@ console.log("a / b =", division(8, 3));
 
 console.log("------ Задание 6. ------");
 
+
+/**
+ * Функция в зависимости от переданного значения операции выполняет эту арифмитическую операцию
+ * @param {Number} arg1 первый аргумент
+ * @param {Number} arg2 второй агрумент
+ * @param {string} operation арифмитическая операция ( + - * / )
+ * @returns {Number|string} результат
+ */
 function mathOperation(arg1, arg2, operation) {
-    var arg1;
-    var arg2;
+    let result;
     switch (operation) {
         case "+":
             result = sum(arg1, arg2);
@@ -117,9 +130,9 @@ function mathOperation(arg1, arg2, operation) {
             break;
         default:
             result = "Проверьте название операции";
-    };
+    }
     return result;
-};
+}
 
 console.log(mathOperation(2, 3, "+"));
 console.log(mathOperation(5, 4, "-"));
@@ -131,8 +144,8 @@ console.log(mathOperation(2, 3, "summa"));
 //7. * Сравнить null и 0. Попробуйте объяснить результат.
 
 console.log("------ Задание 7. ------");
-var aNull = null;
-var aZero = 0;
+let aNull = null;
+let aZero = 0;
 
 //Вывод типа переменных
 console.log(typeof(aNull));
@@ -143,14 +156,28 @@ if (aNull == aZero) {
     console.log("Они равны");
 } else {
     console.log("Они разные");
-};
+}
 
 //Проверка на жесткое равенство
 if (aNull === aZero) {
     console.log("Равны");
 } else {
     console.log("не равны");
-};
+}
+
+//Проверка >
+if (aZero > aNull) {
+    console.log("Больше");
+} else {
+    console.log("Меньше");
+}
+
+//Проверка >=
+if (aZero >= aNull) {
+    console.log("Больше или равен");
+} else {
+    console.log("Меньше");
+}
 
 //8. *С помощью рекурсии организовать функцию возведения числа в степень. Формат: function
 //power(val, pow), где val – заданное число, pow – степень.
@@ -159,9 +186,9 @@ console.log("------ Задание 8. ------");
 
 console.log('*** Рекурсия ***');
 function power(val, pow) {
-	if (pow == 0) {
+	if (pow === 0) {
 		return 1;
-	} else if (pow < 0) { // Провекра на отрицательную степень
+	} else if (pow < 0) { // Проверка на отрицательную степень
 		//4^-5: 1 / 4 / 4 / 4 / 4 / 4
 		return 1 / power(val, -pow);
 	} else {
