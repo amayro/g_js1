@@ -97,3 +97,15 @@ let minValArrSum = Math.min.apply(null, arr[idxArrMaxSum]);
 
 console.log('Массив с максимальной суммой имеет индекс: ', idxArrMaxSum);
 console.log('Минимальное значение в этом массиве ', minValArrSum);
+
+
+
+//6. Создайте массив, любого размера (просто руками, с любыми значениями). Переберите массив в обратном порядке,
+// т.е. с последнего элемента к первому с помощью цикла for.
+
+console.log("------ Задание 6. ------");
+
+let arr_num = [2, 6, 3, 9, 1];
+
+for (let i = 0; i < arr_num.length; console.log(arr_num.reverse()[i]), i++);
+
