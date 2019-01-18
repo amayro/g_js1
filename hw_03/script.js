@@ -107,5 +107,5 @@ console.log("------ Задание 6. ------");
 
 let arr_num = [2, 6, 3, 9, 1];
 
-for (let i = 0; i < arr_num.length; console.log(arr_num.reverse()[i]), i++);
+for (let i = arr_num.length; i >= 0; console.log(arr_num[i]), i--);
 
