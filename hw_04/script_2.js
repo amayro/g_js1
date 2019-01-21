@@ -167,8 +167,8 @@ const game = {
      * @returns {boolean} true
      */
     canPlayerMakeStep(nextPoint) {
-        return (nextPoint.x >= 0 && nextPoint.x < settings.colsCount) &&
-            (nextPoint.y >= 0 && nextPoint.y < settings.rowsCount);
+        return nextPoint.x >= 0 && nextPoint.x < this.settings.colsCount &&
+            nextPoint.y >= 0 && nextPoint.y < this.settings.rowsCount;
     }
 };
 

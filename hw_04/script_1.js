@@ -43,8 +43,26 @@ function getNumInfo(num) {
 
 let num = +prompt('Введите число в диапазоне 0..999');
 
- if (Number.isNaN(num) || !Number.isInteger(num) || num < 0 || num > 999) {
-     console.log('Необходимо ввести целое число в диапазоне 0..999');
-     num = '';
- }
- console.log(getNumInfo(num));
+if (!Number.isInteger(num) || num < 0 || num > 999) {
+    console.log('Необходимо ввести целое число в диапазоне 0..999');
+    num = '';
+}
+console.log(getNumInfo(num));
+
+
+// Вариант 2
+
+function getNumInfo_2(num) {
+    const obj = {};
+    if (!Number.isInteger(num) || num < 0 || num > 999) {
+        console.log('Необходимо ввести целое число в диапазоне 0..999');
+        return {};
+    }
+
+    obj.firstDigit = num % 10;
+    obj.secondDigit = Math.floor(num / 10) % 10;
+    obj.thirdDigit = Math.floor(num / 100);
+    return obj;
+}
+
+console.log(getNumInfo_2(num));

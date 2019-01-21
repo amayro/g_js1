@@ -87,18 +87,12 @@ const game = {
                     let question = this.getCurrentQuestionString(i);
                     let answer = this.getAnswer(question);
 
-                    while (!this.validateAnswer(answer)) {
-                        alert(`Допустимые ответы: ${availableAnswer.join(', ')}`);
-                        answer = this.getAnswer(question);
-                    }
-
                     if (this.userWantExit(answer)) {
                         alert('До свидания!');
                         return;
-                    } else {
-                        if (this.isAnswerCorrect(answer, i)) {
-                            this.scoreCount++;
-                        }
+                    }
+                    if (this.isAnswerCorrect(answer, i)) {
+                        this.scoreCount++;
                     }
                 }
                 alert(`Игра закончена. Количество правильных ответов: ${this.scoreCount}`);
@@ -111,7 +105,14 @@ const game = {
          * @returns {string} Строка ответа пользователя.
          */
         getAnswer(currentQuestion) {
-            return prompt(currentQuestion);
+            while (true) {
+                let answerUser = prompt(currentQuestion);
+                if (this.validateAnswer(answerUser)) {
+                    return answerUser;
+                } else {
+                    alert(`Допустимые ответы: ${availableAnswer.join(', ')}`);
+                }
+            }
         },
 
         /**
