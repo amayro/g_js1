@@ -8,7 +8,8 @@
  * @property {string} settings.openedImageScreenClass Класс для ширмы открытой картинки.
  * @property {string} settings.openedImageCloseBtnClass Класс для картинки кнопки закрыть.
  * @property {string} settings.openedImageCloseBtnSrc Путь до картинки кнопки открыть.
- * @property {element} openedImageEl Элемент открытой картинки.
+ * @property {array} imageArray Массив картинок для показа
+ * @property {number} idxOpenedImageArr Индекс открытой картинки в массиве imageArray .
  */
 const gallery = {
     settings: {
@@ -20,7 +21,8 @@ const gallery = {
         openedImageBackBtnClass: 'galleryWrapper__back',
         openedImageNextBtnClass: 'galleryWrapper__next',
     },
-    openedImageEl: null,
+    imageArray: [],
+    idxOpenedImageArr: null,
 
     /**
      * Инициализирует галерею, ставит обработчик события.
@@ -28,10 +30,10 @@ const gallery = {
      */
     init(userSettings = {}) {
         Object.assign(this.settings, userSettings);
+        const imgContainer = document.querySelector(this.settings.previewSelector);
 
-        document
-            .querySelector(this.settings.previewSelector)
-            .addEventListener('click', event => this.containerClickHandler(event));
+        imgContainer.addEventListener('click', event => this.containerClickHandler(event));
+        this.imageArray = imgContainer.querySelectorAll('img');
     },
 
     /** Обработчик события клика для открытия картинки. */
@@ -47,15 +49,19 @@ const gallery = {
      * @param {target} target Картинка, на которую нажали.
      */
     openImage(target) {
-        this.openedImageEl = target;
+        for (let i = 0; i < this.imageArray.length; i++) {
+            if (this.imageArray[i].src === target.src) {
+                this.idxOpenedImageArr = i;
+                continue;
+            }
+        }
+
         const img = new Image();
         let insertImage = this.getScreenContainer().querySelector(`.${this.settings.openedImageClass}`);
 
         img.onload = () => insertImage.src = target.dataset.full_image_url;
         img.onerror = () => insertImage.src = target.src;
         img.src = target.dataset.full_image_url;
-
-
     },
 
     /**
@@ -84,12 +90,12 @@ const gallery = {
 
         const backImageElement = document.createElement('div');
         backImageElement.classList.add(this.settings.openedImageBackBtnClass);
-        backImageElement.addEventListener('click', () => this.getPrevImage(this.openedImageEl));
+        backImageElement.addEventListener('click', () => this.getPrevImage());
         galleryWrapperElement.appendChild(backImageElement);
 
         const nextImageElement = document.createElement('div');
         nextImageElement.classList.add(this.settings.openedImageNextBtnClass);
-        nextImageElement.addEventListener('click', () => this.getNextImage(this.openedImageEl));
+        nextImageElement.addEventListener('click', () => this.getNextImage());
         galleryWrapperElement.appendChild(nextImageElement);
 
         const closeImageElement = document.createElement('div');
@@ -103,7 +109,7 @@ const gallery = {
 
         const image = new Image();
         image.classList.add(this.settings.openedImageClass);
-        image.addEventListener('click', () => this.getNextImage(this.openedImageEl));
+        image.addEventListener('click', () => this.getNextImage());
         galleryWrapperElement.appendChild(image);
 
         document.body.appendChild(galleryWrapperElement);
@@ -116,10 +122,11 @@ const gallery = {
      * если текущая открытая картинка последняя.
      * @returns {Element} Следующую картинку от текущей открытой.
      */
-    getNextImage(openImageEl) {
-        const nextImage = openImageEl.nextElementSibling
-            ? openImageEl.nextElementSibling
-            : openImageEl.parentElement.firstElementChild;
+    getNextImage() {
+        const nextImage = this.idxOpenedImageArr !== this.imageArray.length-1
+            ? this.imageArray[this.idxOpenedImageArr+1]
+            : this.imageArray[0];
+
         this.openImage(nextImage)
     },
 
@@ -128,11 +135,12 @@ const gallery = {
      * если текущая открытая картинка первая.
      * @returns {Element} Предыдущую картинку от текущей открытой.
      */
-    getPrevImage(openImageEl) {
-        const nextImage = openImageEl.previousElementSibling
-            ? openImageEl.previousElementSibling
-            : openImageEl.parentElement.lastElementChild;
-        this.openImage(nextImage)
+    getPrevImage() {
+        const prevImage = this.idxOpenedImageArr !== 0
+            ? this.imageArray[this.idxOpenedImageArr-1]
+            : this.imageArray[this.imageArray.length-1];
+
+        this.openImage(prevImage)
     },
 
     /**
