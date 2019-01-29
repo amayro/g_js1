@@ -62,7 +62,7 @@ const basket = {
      */
     getOrdersCount() {
         let count = 0;
-        this.orders.forEach((el) => count += el.count)
+        this.orders.forEach((el) => count += el.count);
         return count
     },
 

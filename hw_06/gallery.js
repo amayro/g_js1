@@ -52,7 +52,7 @@ const gallery = {
         for (let i = 0; i < this.imageArray.length; i++) {
             if (this.imageArray[i].src === target.src) {
                 this.idxOpenedImageArr = i;
-                continue;
+                break;
             }
         }
 
