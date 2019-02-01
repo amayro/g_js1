@@ -112,7 +112,6 @@ const score = {
     init() {
         this.countEl = document.getElementById('score');
         this.drop();
-        this.render();
     },
 
     /**
@@ -207,20 +206,6 @@ const snake = {
     maxY: null,
 
     /**
-     * @returns {int} Возвращает максимально возможную координату змейки по Х .
-     */
-    getMaxX() {
-        return this.maxX;
-    },
-
-    /**
-     * @returns {int} Возвращает максимально возможную координату змейки по Y.
-     */
-    getMaxY() {
-        return this.maxY;
-    },
-
-    /**
      * Инициализирует змейку, откуда она будет начинать и ее направление.
      * @param {{x: int, y: int}[]} startBody Начальная позиция змейки.
      * @param {string} direction Начальное направление игрока.
@@ -232,8 +217,8 @@ const snake = {
         this.body = startBody;
         this.direction = direction;
         this.lastStepDirection = direction;
-        this.maxX = maxX - 1;
-        this.maxY = maxY - 1;
+        this.maxX = maxX;
+        this.maxY = maxY;
     },
 
     /**
@@ -265,14 +250,7 @@ const snake = {
      */
     makeStep() {
         this.lastStepDirection = this.direction;
-        const nextPoint = this.getNextStepHeadPoint();
-
-        nextPoint.x = nextPoint.x < 0 ? this.getMaxX() : nextPoint.x;
-        nextPoint.y = nextPoint.y < 0 ? this.getMaxY() : nextPoint.y;
-        nextPoint.x = nextPoint.x > this.getMaxX() ? 0 : nextPoint.x;
-        nextPoint.y = nextPoint.y > this.getMaxY() ? 0 : nextPoint.y;
-
-        this.body.unshift(nextPoint);
+        this.body.unshift(this.getNextStepHeadPoint());
         this.body.pop();
     },
 
@@ -294,13 +272,13 @@ const snake = {
         const firstPoint = this.body[0];
         switch (this.direction) {
             case 'up':
-                return {x: firstPoint.x, y: firstPoint.y - 1};
+                return {x: firstPoint.x, y: firstPoint.y - 1 !== 0 ? firstPoint.y - 1 : this.maxY};
             case 'right':
-                return {x: firstPoint.x + 1, y: firstPoint.y};
+                return {x: firstPoint.x !== this.maxX ? firstPoint.x + 1 : 0, y: firstPoint.y};
             case 'down':
-                return {x: firstPoint.x, y: firstPoint.y + 1};
+                return {x: firstPoint.x, y: firstPoint.y !== this.maxY ? firstPoint.y + 1 : 0};
             case 'left':
-                return {x: firstPoint.x - 1, y: firstPoint.y};
+                return {x: firstPoint.x !== 0 ? firstPoint.x - 1 : this.maxX, y: firstPoint.y};
         }
     },
 
@@ -439,7 +417,7 @@ const game = {
      */
     reset() {
         this.stop();
-        this.snake.init(this.getStartSnakeBody(), 'up', this.config.getRowsCount(), this.config.getColsCount());
+        this.snake.init(this.getStartSnakeBody(), 'up', this.config.getRowsCount()-1, this.config.getColsCount()-1);
         this.food.setCoordinates(this.getRandomFreeCoordinates());
         this.score.drop();
         this.render();
